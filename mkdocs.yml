@@ -2,6 +2,7 @@ site_name: CEG5203 Assignments
 site_url: https://nus-ceg5203.github.io/assignments
 theme:
   name: material
+  custom_dir: overrides
   features:
     - content.tooltips
   font:
