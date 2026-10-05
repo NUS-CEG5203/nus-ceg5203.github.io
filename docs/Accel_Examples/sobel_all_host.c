@@ -1,3 +1,11 @@
+// sobel_all_host.c
+// Times the naive, tiled and image-object Sobel OpenCL kernels on a 1024x1024 image.
+//
+// Build:  gcc -O2 -o sobel_all_host sobel_all_host.c -lOpenCL -lm
+// Run:    ./sobel_all_host        (or: bash run_sobel_all_host.sh)
+//         Run from this directory: sobel_naive.cl, sobel_tiled.cl and sobel_image.cl are
+//         loaded at runtime. Image size and work-group size are fixed in main().
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

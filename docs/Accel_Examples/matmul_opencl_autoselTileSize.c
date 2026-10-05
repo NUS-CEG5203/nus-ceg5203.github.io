@@ -1,5 +1,8 @@
 // matmul_opencl_autotune.c
 // OpenCL GPU with auto tile tuning + OpenMP CPU fallback
+//
+// Build:  gcc -O2 -fopenmp -o matmul_autotile "matmul_opencl_autoselTileSize.c" -lOpenCL
+// Run:    ./matmul_autotile [N]          (default N=1024; tile size auto-selected from 8/16/32/64)
 
 #define CL_TARGET_OPENCL_VERSION 120
 #include <CL/cl.h>

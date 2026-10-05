@@ -1,3 +1,10 @@
+// gpu_demo.c
+// OpenCL GPU vs CPU: matrix multiply (compute-bound) and vector multiply (memory-bound).
+//
+// Build:  gcc -O2 -o gpu_demo gpu_demo.c -lOpenCL
+// Run:    ./gpu_demo
+// Needs:  OpenCL ICD loader + GPU driver (Ubuntu: sudo apt install ocl-icd-opencl-dev)
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -21,11 +28,11 @@ const char *matmul_kernel =
 "    C[row * N + col] = sum;\n"
 "}\n";
 
-// OpenCL kernel for vector addition
-const char *vecadd_kernel = 
-"__kernel void vecadd(__global float* A, __global float* B, __global float* C) {\n"
+// OpenCL kernel for vector multiplication
+const char *vecmul_kernel = 
+"__kernel void vecmul(__global float* A, __global float* B, __global float* C) {\n"
 "    int i = get_global_id(0);\n"
-"    C[i] = A[i] + B[i];\n"
+"    C[i] = A[i] * B[i];\n"
 "}\n";
 
 void cpu_matmul(float *A, float *B, float *C, int N) {
@@ -40,9 +47,9 @@ void cpu_matmul(float *A, float *B, float *C, int N) {
     }
 }
 
-void cpu_vecadd(float *A, float *B, float *C, int N) {
+void cpu_vecmul(float *A, float *B, float *C, int N) {
     for(int i = 0; i < N; i++) {
-        C[i] = A[i] + B[i];
+        C[i] = A[i] * B[i];
     }
 }
 
@@ -56,10 +63,10 @@ int main() {
     cl_context context;
     cl_command_queue queue;
     cl_program program;
-    cl_kernel kernel_matmul, kernel_vecadd;
+    cl_kernel kernel_matmul, kernel_vecmul;
     cl_int err;
     
-    printf("=== GPU Acceleration Demo: Matrix Multiplication vs Vector Addition ===\n\n");
+    printf("=== GPU Acceleration Demo: Matrix Multiplication vs Vector Multiplication ===\n\n");
     
     // Initialize OpenCL
     clGetPlatformIDs(1, &platform, NULL);
@@ -126,8 +133,8 @@ int main() {
     clReleaseKernel(kernel_matmul);
     clReleaseProgram(program);
     
-    // ========== VECTOR ADDITION ==========
-    printf("--- Vector Addition (%d elements) ---\n", VECTOR_SIZE);
+    // ========== VECTOR MULTIPLICATION ==========
+    printf("--- Vector Multiplication (%d elements) ---\n", VECTOR_SIZE);
     
     size_t vector_bytes = VECTOR_SIZE * sizeof(float);
     float *A_vec = (float*)malloc(vector_bytes);
@@ -141,14 +148,14 @@ int main() {
         B_vec[i] = (float)(rand() % 100) / 10.0f;
     }
     
-    // CPU vector addition
+    // CPU vector multiplication
     clock_gettime(CLOCK_MONOTONIC, &start);
-    cpu_vecadd(A_vec, B_vec, C_vec_cpu, VECTOR_SIZE);
+    cpu_vecmul(A_vec, B_vec, C_vec_cpu, VECTOR_SIZE);
     clock_gettime(CLOCK_MONOTONIC, &end);
-    double cpu_vecadd_time = get_time_diff(start, end);
-    printf("CPU Time: %.6f seconds\n", cpu_vecadd_time);
+    double cpu_vecmul_time = get_time_diff(start, end);
+    printf("CPU Time: %.6f seconds\n", cpu_vecmul_time);
     
-    // GPU vector addition
+    // GPU vector multiplication
     d_A = clCreateBuffer(context, CL_MEM_READ_ONLY, vector_bytes, NULL, NULL);
     d_B = clCreateBuffer(context, CL_MEM_READ_ONLY, vector_bytes, NULL, NULL);
     d_C = clCreateBuffer(context, CL_MEM_WRITE_ONLY, vector_bytes, NULL, NULL);
@@ -156,38 +163,39 @@ int main() {
     clEnqueueWriteBuffer(queue, d_A, CL_TRUE, 0, vector_bytes, A_vec, 0, NULL, NULL);
     clEnqueueWriteBuffer(queue, d_B, CL_TRUE, 0, vector_bytes, B_vec, 0, NULL, NULL);
     
-    program = clCreateProgramWithSource(context, 1, &vecadd_kernel, NULL, &err);
+    program = clCreateProgramWithSource(context, 1, &vecmul_kernel, NULL, &err);
     clBuildProgram(program, 1, &device, NULL, NULL, NULL);
-    kernel_vecadd = clCreateKernel(program, "vecadd", &err);
+    kernel_vecmul = clCreateKernel(program, "vecmul", &err);
     
-    clSetKernelArg(kernel_vecadd, 0, sizeof(cl_mem), &d_A);
-    clSetKernelArg(kernel_vecadd, 1, sizeof(cl_mem), &d_B);
-    clSetKernelArg(kernel_vecadd, 2, sizeof(cl_mem), &d_C);
+    clSetKernelArg(kernel_vecmul, 0, sizeof(cl_mem), &d_A);
+    clSetKernelArg(kernel_vecmul, 1, sizeof(cl_mem), &d_B);
+    clSetKernelArg(kernel_vecmul, 2, sizeof(cl_mem), &d_C);
     
     size_t global_work_size_vec = VECTOR_SIZE;
     
     clock_gettime(CLOCK_MONOTONIC, &start);
-    clEnqueueNDRangeKernel(queue, kernel_vecadd, 1, NULL, &global_work_size_vec, NULL, 0, NULL, NULL);
+    clEnqueueNDRangeKernel(queue, kernel_vecmul, 1, NULL, &global_work_size_vec, NULL, 0, NULL, NULL);
     clFinish(queue);
     clock_gettime(CLOCK_MONOTONIC, &end);
-    double gpu_vecadd_time = get_time_diff(start, end);
+    double gpu_vecmul_time = get_time_diff(start, end);
     
     clEnqueueReadBuffer(queue, d_C, CL_TRUE, 0, vector_bytes, C_vec_gpu, 0, NULL, NULL);
-    printf("GPU Time: %.6f seconds\n", gpu_vecadd_time);
-    printf("Speedup: %.2fx\n\n", cpu_vecadd_time / gpu_vecadd_time);
+    printf("GPU Time: %.6f seconds\n", gpu_vecmul_time);
+    printf("Speedup: %.2fx\n\n", cpu_vecmul_time / gpu_vecmul_time);
     
     // ========== COMPARISON ==========
     printf("=== SUMMARY ===\n");
     printf("Matrix Multiplication Speedup: %.2fx\n", cpu_matmul_time / gpu_matmul_time);
-    printf("Vector Addition Speedup: %.2fx\n", cpu_vecadd_time / gpu_vecadd_time);
-    printf("\nAs expected, matrix multiplication shows MUCH higher GPU acceleration\n");
-    printf("due to its O(N³) computational complexity vs vector addition's O(N).\n");
+    printf("Vector Multiplication Speedup: %.2fx\n", cpu_vecmul_time / gpu_vecmul_time);
+
+    printf("\nMatrix multiplication achieves far higher speedup because it is COMPUTE BOUND (O(N³))\n");
+    printf("while elementwise vector operations remain MEMORY BOUND (O(N)) regardless of which arithmetic operator is used.\n");
     
     // Cleanup
     clReleaseMemObject(d_A);
     clReleaseMemObject(d_B);
     clReleaseMemObject(d_C);
-    clReleaseKernel(kernel_vecadd);
+    clReleaseKernel(kernel_vecmul);
     clReleaseProgram(program);
     clReleaseCommandQueue(queue);
     clReleaseContext(context);

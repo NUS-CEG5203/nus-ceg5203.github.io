@@ -1,5 +1,9 @@
 // sobel_tiled.cl
 // Optimized Sobel filter using tiled local memory (halo)
+//
+// OpenCL kernel source, compiled at runtime by the host program. To run:
+//   gcc -O2 -o sobel_host sobel_host.c -lOpenCL -lm && ./sobel_host [width] [height] [block]
+//   gcc -O2 -o sobel_all_host sobel_all_host.c -lOpenCL -lm && ./sobel_all_host
 
 __kernel void sobel_tiled(
     __global const uchar *in,

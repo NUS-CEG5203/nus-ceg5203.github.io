@@ -1,3 +1,17 @@
+// kernel_burst.cpp
+// Burst-optimised Vitis HLS vector addition: separate m_axi bundles, 64-element
+// read -> compute -> write chunks through local buffers. Testbench: test_Kernel.cpp
+//
+// Setup:
+//   source ~/Xilinx/2025.1/Vitis/settings64.sh   # adjust to your install; sets $XILINX_VITIS
+// C simulation:
+//   g++ -O2 -I$XILINX_VITIS/include -o tb_vadd_burst kernel_burst.cpp test_Kernel.cpp
+//   ./tb_vadd_burst
+// Synthesis (Vitis HLS, KV260 part):
+//   v++ -c --mode hls --part xck26-sfvc784-2LV-c --hls.flow_target vivado \
+//       --hls.syn.file kernel_burst.cpp --hls.syn.top vadd --hls.clock 10ns --work_dir vadd_burst
+//   # Report: vadd_burst/hls/syn/report/vadd_csynth.rpt
+
 #include <ap_int.h>
 #include <hls_stream.h>
 

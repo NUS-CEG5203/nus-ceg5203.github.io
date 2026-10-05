@@ -1,3 +1,13 @@
+// test_Kernel.cpp
+// Testbench for the vadd kernel in kernel_burst.cpp (compares against a software reference).
+//
+// Setup:
+//   source ~/Xilinx/2025.1/Vitis/settings64.sh   # adjust to your install; sets $XILINX_VITIS
+// C simulation:
+//   g++ -O2 -I$XILINX_VITIS/include -o tb_vadd_burst kernel_burst.cpp test_Kernel.cpp
+//   ./tb_vadd_burst
+// See kernel.cpp for using this testbench with the simple kernel.
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>  // For INT_MAX, INT_MIN

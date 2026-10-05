@@ -1,5 +1,8 @@
-// matmul_coalescing.c
+// coalesced_vs_noncoalesced.c
 // Compare coalesced vs non-coalesced GPU memory access + OpenMP CPU fallback
+//
+// Build:  gcc -O2 -fopenmp -o coalesced_vs_noncoalesced coalesced_vs_noncoalesced.c -lOpenCL
+// Run:    ./coalesced_vs_noncoalesced [N]          (default N=1024; OpenMP CPU path if no GPU is found)
 
 #define CL_TARGET_OPENCL_VERSION 120
 #include <CL/cl.h>

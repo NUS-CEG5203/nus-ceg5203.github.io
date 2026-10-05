@@ -1,5 +1,9 @@
 // sobel_host.c
 // Compare naive vs tiled Sobel OpenCL kernels
+//
+// Build:  gcc -O2 -o sobel_host sobel_host.c -lOpenCL -lm
+// Run:    ./sobel_host [width] [height] [block]
+//         Run from this directory: sobel_naive.cl and sobel_tiled.cl are loaded at runtime.
 #define CL_TARGET_OPENCL_VERSION 120
 #include <CL/cl.h>
 #include <stdio.h>

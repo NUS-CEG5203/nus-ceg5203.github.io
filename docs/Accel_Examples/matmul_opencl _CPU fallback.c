@@ -1,7 +1,8 @@
-// matmul_opencl_with_cpu_omp.c
-// OpenCL GPU run, CPU fallback with OpenMP if no OpenCL CPU device
-
-// gcc matmul_opencl.c -o matmul_opencl -lOpenCL -fopenmp -O2
+// matmul_opencl_with_cpu_fallback.c
+// OpenCL GPU run, CPU fallback if no OpenCL CPU device
+//
+// Build:  gcc -O2 -o matmul_cpu_fallback "matmul_opencl _CPU fallback.c" -lOpenCL
+// Run:    ./matmul_cpu_fallback [N] [tile]   (defaults: N=1024, tile=16; tile <= 64)
 
 #define CL_TARGET_OPENCL_VERSION 120
 #include <CL/cl.h>
@@ -10,9 +11,6 @@
 #include <time.h>
 #include <string.h>
 #include <math.h>
-#ifdef _OPENMP
-#include <omp.h>
-#endif
 
 static const char *kernelSource =
 "__kernel void matmul_tiled(const int N, __global const float* A, __global const float* B, __global float* C, const int tile) {\n"
@@ -48,11 +46,8 @@ void fill_rand(float *M, int N) {
     for (int i = 0; i < N * N; ++i) M[i] = (float)(rand() % 100) / 10.0f;
 }
 
-// Plain C CPU matrix multiplication with OpenMP
-void matmul_cpu_omp(const float *A, const float *B, float *C, int N) {
-#ifdef _OPENMP
-    #pragma omp parallel for collapse(2)
-#endif
+// Plain C CPU matrix multiplication
+void matmul_cpu(const float *A, const float *B, float *C, int N) {
     for (int i = 0; i < N; i++)
         for (int j = 0; j < N; j++) {
             float acc = 0.0f;
@@ -81,7 +76,7 @@ int run_on_device(cl_device_type dev_type, int N, int tile, double *out_total_ms
     }
     free(platforms);
 
-    if (!chosenDevice) return -2;
+    if (!chosenDevice) return -2; // No device of requested type
 
     char devName[256];
     clGetDeviceInfo(chosenDevice, CL_DEVICE_NAME, sizeof(devName), devName, NULL);
@@ -169,7 +164,7 @@ int main(int argc, char **argv) {
     // CPU fallback if OpenCL CPU device not found
     int rc_cpu = run_on_device(CL_DEVICE_TYPE_CPU, N, tile, &cpu_total, &cpu_kernel);
     if (rc_cpu == -2) {
-        printf("No OpenCL CPU device found. Running plain C CPU multiplication with OpenMP.\n");
+        printf("No OpenCL CPU device found. Running plain C CPU multiplication.\n");
         size_t bytes = (size_t)N * N * sizeof(float);
         float *A = (float*)malloc(bytes);
         float *B = (float*)malloc(bytes);
@@ -179,11 +174,11 @@ int main(int argc, char **argv) {
         fill_rand(B, N);
         struct timespec t0, t1;
         clock_gettime(CLOCK_MONOTONIC, &t0);
-        matmul_cpu_omp(A, B, C, N);
+        matmul_cpu(A, B, C, N);
         clock_gettime(CLOCK_MONOTONIC, &t1);
         cpu_total = time_diff_ms(t1, t0);
         cpu_kernel = cpu_total;
-        printf("CPU (OpenMP) time: %.3f ms\n", cpu_total);
+        printf("CPU (plain C) time: %.3f ms\n", cpu_total);
         free(A); free(B); free(C);
     }
 

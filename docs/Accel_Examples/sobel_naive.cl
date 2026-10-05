@@ -1,5 +1,9 @@
 // sobel_naive.cl
 // Simple Sobel kernel (each work-item reads 9 pixels from global memory)
+//
+// OpenCL kernel source, compiled at runtime by the host program. To run:
+//   gcc -O2 -o sobel_host sobel_host.c -lOpenCL -lm && ./sobel_host [width] [height] [block]
+//   gcc -O2 -o sobel_all_host sobel_all_host.c -lOpenCL -lm && ./sobel_all_host
 
 __kernel void sobel_naive(
     __global const uchar *in,

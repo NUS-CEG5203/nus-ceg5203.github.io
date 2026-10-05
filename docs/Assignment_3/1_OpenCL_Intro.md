@@ -1,10 +1,9 @@
 # OpenCL Introduction
 
-!!! danger "Work in Progress"
-<!-- 
+<!-- !!! danger "Work in Progress"-->
+
 !!! success "Final"
     This assignment description is now complete. There could still be minor updates, which will be <span style="color: brown;">highlighted</span>. 
--->
 
 In this assignment, we explore OpenCL and Pynq. 
 
@@ -41,7 +40,7 @@ Upload a .zip file containing the
     2) OpenCL (CPU) on Kria, with a comparison with plain C
     3) Pynq on Kria
 
-to Canvas by **11:59 PM, 1 Nov 2025**.
+to Canvas by **11:59 PM, 19 Nov 2026**.
 
 It should be as a single .zip archive, with the filename <Team member 1 Name\>\_<Team member 2 Name\>\_3.zip. One submission per team is sufficient. It will show as not submitted for the other person, but that is ok. If you are doing solo, do not include \_<Team member 2 Name\> in the filename.
 

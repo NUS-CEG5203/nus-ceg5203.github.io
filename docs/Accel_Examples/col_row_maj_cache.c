@@ -1,3 +1,9 @@
+// col_row_maj_cache.c
+// Row-major vs column-major traversal of a 2D array (CPU cache / spatial locality).
+//
+// Build:  gcc -O2 -o col_row_maj_cache col_row_maj_cache.c
+// Run:    ./col_row_maj_cache
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>

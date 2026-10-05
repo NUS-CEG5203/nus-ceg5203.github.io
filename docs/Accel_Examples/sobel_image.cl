@@ -1,5 +1,8 @@
 // sobel_image.cl
 // Sobel edge detection using image objects and samplers
+//
+// OpenCL kernel source, compiled at runtime by the host program. To run:
+//   gcc -O2 -o sobel_all_host sobel_all_host.c -lOpenCL -lm && ./sobel_all_host
 
 __constant sampler_t smp = CLK_NORMALIZED_COORDS_FALSE |
                            CLK_ADDRESS_CLAMP_TO_EDGE |

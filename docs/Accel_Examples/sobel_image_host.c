@@ -1,3 +1,9 @@
+// sobel_image_host.c
+// FRAGMENT ONLY - not a standalone program; it does not compile on its own.
+// Shows the image-object host setup for sobel_image.cl. The complete, buildable
+// version is run_image_kernel() in sobel_all_host.c:
+//   gcc -O2 -o sobel_all_host sobel_all_host.c -lOpenCL -lm && ./sobel_all_host
+
 // Replace the buffer-based code with image setup:
 cl_image_format fmt = { CL_R, CL_UNORM_INT8 };
 cl_image_desc desc;
