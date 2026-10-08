@@ -1,6 +1,6 @@
 # Open-ended Project
 
-!!! danger "Work in Progress"
+<!-- !!! danger "Work in Progress" -->
 
 The project is open-ended - you choose the application to accelerate as well as the exact stuff to do.
 
