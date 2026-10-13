@@ -43,7 +43,7 @@ Serial communication can be used for FPGA, with data sent via UART, but you can 
 
 ## Deliverables
 
-Make a short 10-minute presentation (7-8 minutes for presentation, 2-3 minutes for QnA) on your application, approaches, and results. Some of you will have to present in the Week 13 lecture, others will present at other time slots to the teaching assistants. The criterion for deciding who will have to present during the lecture will be announced later. A quick demo of your system during the presentation is appreciated, though not absolutely necessary. However, we reserve the right to require a quick demo after the presentation if we deem it necessary.
+Make a short 10-minute presentation (7-8 minutes for presentation, 2-3 minutes for QnA) on your application, approaches, and results. Most of you will have to present in the Week 13 lecture, others will present at other time slots. The criterion for deciding who will have to present during the lecture will be announced later. A quick demo of your system during the presentation is appreciated, though not absolutely necessary. However, we reserve the right to require a quick demo after the presentation if we deem it necessary.
 
 No report is necessary, but the slides to be used for the presentation, all the codes (only source files - .c/.cpp/.h/.py you have created/edited) + .xdc files/files + data files + any PC-side visualization code should be uploaded to Canvas by 6 PM of Week 13 Monday.
 It should be as a single .zip archive, with the filename <Team member 1 Name\>\_<Team member 2 Name\>\_1.zip. One submission per team is sufficient. It will show as not submitted for the other person, but that is ok. If you are doing solo, do not include \_<Team member 2 Name\> in the filename.
