@@ -49,7 +49,7 @@ The template/data files are [here](https://github.com/NUS-CEG5203/assignments/tr
     
     `pacman -S mingw-w64-ucrt-x86_64-gcc` to install the GCC compiler
     
-    `pacman -S mingw-w64-ucrt-x86_64-gcd` to install the GNU debugger.
+    `pacman -S mingw-w64-ucrt-x86_64-gdb` to install the GNU debugger.
 
     By default, the toolchain is installed to C:\msys64\ucrt64. If you want to know the location, you can find out by typing `which g++`.
 
