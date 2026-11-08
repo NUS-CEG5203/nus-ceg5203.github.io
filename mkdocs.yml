@@ -33,3 +33,11 @@ markdown_extensions:
 extra_javascript:
   - javascripts/mathjax.js
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+# Visualisation guides are reached only via the Visualisations Index page
+not_in_nav: |
+  /Visualisations/cache.md
+  /Visualisations/interrupt.md
+  /Visualisations/multithread.md
+  /Visualisations/dataparallel.md
+  /Visualisations/systolic.md
+  /Visualisations/opencl.md
