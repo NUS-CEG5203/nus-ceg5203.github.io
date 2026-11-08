@@ -1,0 +1,2017 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://nus-ceg5203.github.io/assignments/Accel_Examples/Acceleration_Examples/">
+      
+      
+        <link rel="prev" href="../..">
+      
+      
+        <link rel="next" href="../../Assignment_1/1_Intro/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+    
+    
+      
+        <title>Hardware Acceleration & Memory Access Examples - CEG5203 Assignments</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Merriweather";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="nus" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#hardware-acceleration-memory-access-examples" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="CEG5203 Assignments" class="md-header__button md-logo" aria-label="CEG5203 Assignments" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CEG5203 Assignments
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Hardware Acceleration &amp; Memory Access Examples
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="CEG5203 Assignments" class="md-nav__button md-logo" aria-label="CEG5203 Assignments" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CEG5203 Assignments
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CEG5203 Assignment Manuals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accel Examples
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Accel Examples
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware Acceleration &amp; Memory Access Examples
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware Acceleration &amp; Memory Access Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-col_row_maj_cachec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. col_row_maj_cache.c
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-aos_vs_soac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. aos_vs_soa.c
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-matrix_transpose_optimizationc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. matrix_transpose_optimization.c
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-gpu_democ" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. gpu_demo.c
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-coalesced_vs_noncoalescedc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. coalesced_vs_noncoalesced.c
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-vadd_comparisoncpp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. vadd_comparison.cpp
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-sum_halvescpp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. sum_halves.cpp
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-tiled-opencl-matrix-multiplication-matmul_c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Tiled OpenCL Matrix Multiplication — matmul_*.c
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-hls-vector-addition-kernels-kernelcpp-kernel_burstcpp-test_kernelcpp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. HLS Vector Addition Kernels — kernel.cpp, kernel_burst.cpp, test_Kernel.cpp
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-opencl-sobel-edge-detection-sobel_" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. OpenCL Sobel Edge Detection — sobel_*
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-number_formatsc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. number_formats.c
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assignment 1
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Assignment 1
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Assignment_1/1_Intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction to Hardware/Software Co-Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Assignment_1/2_HW_Platform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Creating the Hardware Platform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Assignment_1/3_Using_Vitis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Software development using Vitis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Assignment_1/3_Using_Vitis_Classic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Software development using Vitis Classic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Assignment_1/4_Serial_Console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Serial Console - RealTerm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Assignment_1/5_Performance_Analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Measuring Performance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Assignment_1/6_Tips_Suggestions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tips and Suggestions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assignment 2
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Assignment 2
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Assignment_2/1_HLSIntro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    High Level Synthesis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Assignment_2/2_HLSFLow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HLS Flow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Assignment_2/3_FIFO/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coprocessor Integration using AXI Stream FIFO
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Assignment_2/3_MultipleCoPro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Connecting Multiple Coprocessors (Optional)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Assignment_2/4_DMA/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coprocessor Integration using AXI DMA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Assignment_2/5_ModifyCoPro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modifying the Coprocessor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assignment 3
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Assignment 3
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Assignment_3/1_OpenCL_Intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenCL Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Assignment_3/2_OpenCL_Instructions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenCL Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Assignment_3/3_Pynq_OpenCL_Kria/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pynq and OpenCL on Kria
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Installation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Installation/Installing_Vitis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installing Vitis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Project
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Project/Final_Project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Open-ended Project
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visualisations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Visualisations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Visualisations/Visualisations%20Index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visualisations Index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-col_row_maj_cachec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. col_row_maj_cache.c
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-aos_vs_soac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. aos_vs_soa.c
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-matrix_transpose_optimizationc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. matrix_transpose_optimization.c
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-gpu_democ" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. gpu_demo.c
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-coalesced_vs_noncoalescedc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. coalesced_vs_noncoalesced.c
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-vadd_comparisoncpp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. vadd_comparison.cpp
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-sum_halvescpp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. sum_halves.cpp
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-tiled-opencl-matrix-multiplication-matmul_c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Tiled OpenCL Matrix Multiplication — matmul_*.c
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-hls-vector-addition-kernels-kernelcpp-kernel_burstcpp-test_kernelcpp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. HLS Vector Addition Kernels — kernel.cpp, kernel_burst.cpp, test_Kernel.cpp
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-opencl-sobel-edge-detection-sobel_" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. OpenCL Sobel Edge Detection — sobel_*
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-number_formatsc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. number_formats.c
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="hardware-acceleration-memory-access-examples">Hardware Acceleration &amp; Memory Access Examples</h1>
+<p>Code examples that illustrate hardware acceleration concepts, memory access patterns and number representation, with parallels across CPU, GPU and FPGA platforms.</p>
+<p>All examples are AI-generated. The repository is <a href="https://github.com/NUS-CEG5203/nus-ceg5203.github.io/tree/main/docs/Accel_Examples">here</a>.</p>
+<hr />
+<h2 id="1-col_row_maj_cachec">1. <code>col_row_maj_cache.c</code></h2>
+<p><strong>Summary:</strong> Allocates a 2D matrix and times row-major and column-major traversal.</p>
+<p><strong>Significance:</strong> Shows the effect of spatial locality on CPU cache performance. Row-major traversal is sequential (matching how C lays out 2D arrays) and uses every word of each cache line. Column-major traversal strides across rows, so each fetch yields one useful word and latency rises sharply. This is analogous to DDR on FPGAs, where sequential AXI bursts are far more efficient than strided accesses.</p>
+<p><img alt="Column vs Row Major" src="../Figures/col_row_maj_cache.svg" /></p>
+<p><strong>How to Run:</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>gcc<span class="w"> </span>-O2<span class="w"> </span>-o<span class="w"> </span>col_row_maj_cache<span class="w"> </span>col_row_maj_cache.c
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>./col_row_maj_cache
+</span></code></pre></div>
+<em>Dependencies: standard C library only.</em></p>
+<hr />
+<h2 id="2-aos_vs_soac">2. <code>aos_vs_soa.c</code></h2>
+<p><strong>Summary:</strong> Compares Array of Structures (AoS) and Structure of Arrays (SoA) layouts when summing one field (x) over 64 million elements.</p>
+<p><strong>Significance:</strong> When only one field of a four-field struct is read, AoS wastes 75% of each cache line on unused fields (y, z, w), while SoA keeps the needed field contiguous. The same trade-off drives BRAM layout and memory-bank choices in HLS and FPGA data paths.</p>
+<p><img alt="aos_vs_soa" src="../Figures/aos_vs_soa.svg" /></p>
+<p><strong>How to Run:</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>gcc<span class="w"> </span>-O2<span class="w"> </span>-o<span class="w"> </span>aos_vs_soa<span class="w"> </span>aos_vs_soa.c
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>./aos_vs_soa
+</span></code></pre></div>
+<em>Dependencies: standard C library only.</em></p>
+<hr />
+<h2 id="3-matrix_transpose_optimizationc">3. <code>matrix_transpose_optimization.c</code></h2>
+<p><strong>Summary:</strong> Benchmarks naive matrix multiplication (column-wise access of B) against a version that first transposes B so the inner loop reads both operands sequentially.</p>
+<p><strong>Significance:</strong> The naive inner loop steps through B with a stride of N elements and misses the cache on almost every access. The transpose costs one extra O(N²) pass but removes O(N³) cache misses, which is counter-intuitive but a clear net win. The FPGA equivalent is adding a reshape or tiling stage that costs area but enables a tight, pipelined inner dataflow.</p>
+<p><img alt="matrix_transpose_optimization" src="../Figures/matrix_transpose_optimization.svg" /></p>
+<p><strong>How to Run:</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>gcc<span class="w"> </span>-O2<span class="w"> </span>-o<span class="w"> </span>matrix_transpose<span class="w"> </span>matrix_transpose_optimization.c
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>./matrix_transpose
+</span></code></pre></div>
+<em>Dependencies: standard C library only.</em></p>
+<hr />
+<h2 id="4-gpu_democ">4. <code>gpu_demo.c</code></h2>
+<p><strong>Summary:</strong> Uses OpenCL to run a 1024×1024 matrix multiplication and a 10M-element vector multiplication on a GPU, each compared with a CPU baseline.</p>
+<p><strong>Significance:</strong> Contrasts compute-bound and memory-bound workloads using <strong>arithmetic intensity</strong>, the FLOPs performed per byte moved.
+- <em>Compute-bound</em> (matrix multiply, O(N³) work on O(N²) data): each fetched byte is reused many times, so the GPU's ALUs stay busy and the speedup is large.
+- <em>Memory-bound</em> (element-wise multiply): one multiply per load, so PCIe transfer and DRAM/AXI bandwidth dominate, the ALUs sit idle, and the speedup is small.</p>
+<p>Arithmetic intensity is the key predictor of how much a GPU or FPGA accelerator will help.</p>
+<p><strong>How to Run:</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>gcc<span class="w"> </span>-O2<span class="w"> </span>-o<span class="w"> </span>gpu_demo<span class="w"> </span>gpu_demo.c<span class="w"> </span>-lOpenCL
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>./gpu_demo
+</span></code></pre></div>
+<em>Dependencies: OpenCL runtime and ICD loader (<code>libOpenCL</code>), and a GPU with an OpenCL 1.2+ driver. On Ubuntu: <code>sudo apt install ocl-icd-opencl-dev</code>.</em></p>
+<hr />
+<h2 id="5-coalesced_vs_noncoalescedc">5. <code>coalesced_vs_noncoalesced.c</code></h2>
+<p><strong>Summary:</strong> Runs two OpenCL matrix multiplication kernels, one with coalesced and one with non-coalesced global memory access, and reports the kernel time of each.</p>
+<p><strong>Significance:</strong> On GPUs (and FPGA HBM/DDR), coalescing merges the memory requests of neighbouring work-items into one wide transaction. The non-coalesced kernel indexes A and B transposed, which forces many narrow transactions and cuts effective bandwidth. Falls back to OpenMP on the CPU if no GPU is found. This mirrors AXI burst vs. random access in FPGA design.</p>
+<p>Note: <code>matmul_opencl.c</code> is the same program (identical apart from its header comment).</p>
+<p><strong>How to Run:</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>gcc<span class="w"> </span>-O2<span class="w"> </span>-fopenmp<span class="w"> </span>-o<span class="w"> </span>coalesced_vs_noncoalesced<span class="w"> </span>coalesced_vs_noncoalesced.c<span class="w"> </span>-lOpenCL
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>./coalesced_vs_noncoalesced<span class="w"> </span><span class="o">[</span>matrix_size<span class="o">]</span><span class="w">   </span><span class="c1"># default N=1024</span>
+</span></code></pre></div>
+<em>Dependencies: OpenCL runtime and ICD loader (<code>libOpenCL</code>); OpenMP (included in GCC).</em></p>
+<hr />
+<h2 id="6-vadd_comparisoncpp">6. <code>vadd_comparison.cpp</code></h2>
+<p><strong>Summary:</strong> Two HLS-annotated vector addition kernels, a simple single-element version and a burst-optimised version with local ping-pong buffers, benchmarked in software simulation.</p>
+<p><strong>Significance:</strong> The burst kernel stages data through local buffers in chunks of 64 elements, mimicking the read–compute–write pattern HLS uses to infer pipelined AXI bursts. The <code>#pragma HLS</code> directives (<code>m_axi</code>, <code>PIPELINE</code>, <code>ARRAY_PARTITION</code>) show where annotations go, but the file is for desktop runs only: its dummy file-scope pragmas make Vitis HLS reject it. The synthesisable versions are <code>kernel.cpp</code> and <code>kernel_burst.cpp</code> (section 9).</p>
+<p>The burst version will most likely run <em>slower</em> on a CPU. Why? The CPU already prefetches cache lines, so the extra copies are pure overhead. The same idea appears on every platform:</p>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Mechanism</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU</td>
+<td>cache-line prefetch</td>
+</tr>
+<tr>
+<td>GPU</td>
+<td>coalesced warp loads</td>
+</tr>
+<tr>
+<td>FPGA</td>
+<td>AXI burst reads</td>
+</tr>
+</tbody>
+</table>
+<p>All three answer the same question: pay the setup cost once, then stream.</p>
+<p><img alt="" src="../Figures/vadd_comparison_burst.svg" /></p>
+<p><strong>How to Run:</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>g++<span class="w"> </span>-O2<span class="w"> </span>-o<span class="w"> </span>vadd_comparison<span class="w"> </span>vadd_comparison.cpp
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>./vadd_comparison
+</span></code></pre></div>
+<em>Dependencies: standard C++ library only.</em></p>
+<hr />
+<h2 id="7-sum_halvescpp">7. <code>sum_halves.cpp</code></h2>
+<p><strong>Summary:</strong> An HLS kernel that reads 2048 integers from BRAM and writes 1024 outputs, each the average of one element from each half of the input.</p>
+<p><strong>Significance:</strong> A minimal HLS design exercise. <code>#pragma HLS PIPELINE</code> targets an initiation interval (II) of 1. The commented-out <code>ARRAY_PARTITION</code> pragma and the alternative three-way average let you explore how BRAM port conflicts limit pipeline throughput and how array partitioning resolves them. See the Lecture 13B recording for a live demo.</p>
+<p><strong>How to Run:</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">source</span><span class="w"> </span>~/Xilinx/2025.1/Vitis/settings64.sh<span class="w">   </span><span class="c1"># adjust to your install; sets $XILINX_VITIS</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="c1"># Synthesis for the KV260 part</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>v++<span class="w"> </span>-c<span class="w"> </span>--mode<span class="w"> </span>hls<span class="w"> </span>--part<span class="w"> </span>xck26-sfvc784-2LV-c<span class="w"> </span>--hls.flow_target<span class="w"> </span>vivado<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span>--hls.syn.file<span class="w"> </span>sum_halves.cpp<span class="w"> </span>--hls.syn.top<span class="w"> </span>sum_halves<span class="w"> </span>--hls.clock<span class="w"> </span>10ns<span class="w"> </span>--work_dir<span class="w"> </span>sum_halves
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="c1"># Report (check the achieved II): sum_halves/hls/syn/report/sum_halves_csynth.rpt</span>
+</span></code></pre></div>
+<em>Dependencies: Vitis HLS 2025.1 (<code>v++</code>). There is no <code>main()</code> or testbench, so this cannot be built as an executable; <code>g++ -c sum_halves.cpp</code> only checks syntax.</em></p>
+<hr />
+<h2 id="8-tiled-opencl-matrix-multiplication-matmul_c">8. Tiled OpenCL Matrix Multiplication — <code>matmul_*.c</code></h2>
+<p><strong>Summary:</strong> Three variants of a tiled OpenCL matrix multiplication (the <code>matmul_tiled</code> kernel stages tiles of A and B in <code>__local</code> memory). Each runs on the GPU, then on an OpenCL CPU device (or a host fallback if none exists), and prints a GPU-vs-CPU summary.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>CPU fallback</th>
+<th>Tile size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>matmul_opencl _CPU fallback.c</code></td>
+<td>Plain C (single-threaded)</td>
+<td>Command line (default 16)</td>
+</tr>
+<tr>
+<td><code>matmul_openmp.c</code></td>
+<td>OpenMP (multi-threaded)</td>
+<td>Command line (default 16)</td>
+</tr>
+<tr>
+<td><code>matmul_opencl_autoselTileSize.c</code></td>
+<td>OpenMP (multi-threaded)</td>
+<td>Auto-tuned from {8, 16, 32, 64}, limited by the device's max work-group size</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Significance:</strong> Tiling is how GPUs (and FPGA designs, via BRAM buffers) reuse data: each element loaded into a local tile is used <code>tile</code> times instead of once, raising arithmetic intensity (see <code>gpu_demo.c</code>). The two fallbacks show how much of the GPU's advantage a multi-core CPU recovers. The auto-tuner shows that the best tile size is hardware-dependent, trading local-memory capacity and work-group limits against reuse, just as tile and partition sizes are chosen in HLS.</p>
+<p><strong>How to Run:</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Plain C fallback (filename contains a space)</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>gcc<span class="w"> </span>-O2<span class="w"> </span>-o<span class="w"> </span>matmul_cpu_fallback<span class="w"> </span><span class="s2">"matmul_opencl _CPU fallback.c"</span><span class="w"> </span>-lOpenCL
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>./matmul_cpu_fallback<span class="w"> </span><span class="o">[</span>N<span class="o">]</span><span class="w"> </span><span class="o">[</span>tile<span class="o">]</span><span class="w">          </span><span class="c1"># defaults: N=1024, tile=16</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="c1"># OpenMP fallback</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>gcc<span class="w"> </span>-O2<span class="w"> </span>-fopenmp<span class="w"> </span>-o<span class="w"> </span>matmul_openmp<span class="w"> </span>matmul_openmp.c<span class="w"> </span>-lOpenCL
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>./matmul_openmp<span class="w"> </span><span class="o">[</span>N<span class="o">]</span><span class="w"> </span><span class="o">[</span>tile<span class="o">]</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="c1"># Auto-selected tile size</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>gcc<span class="w"> </span>-O2<span class="w"> </span>-fopenmp<span class="w"> </span>-o<span class="w"> </span>matmul_autotile<span class="w"> </span>matmul_opencl_autoselTileSize.c<span class="w"> </span>-lOpenCL
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>./matmul_autotile<span class="w"> </span><span class="o">[</span>N<span class="o">]</span>
+</span></code></pre></div>
+<em>Dependencies: OpenCL runtime and ICD loader (<code>libOpenCL</code>); OpenMP (included in GCC). Tile size must be ≤ 64 (the size of the <code>__local</code> arrays) and <code>tile²</code> must not exceed the device's max work-group size.</em></p>
+<hr />
+<h2 id="9-hls-vector-addition-kernels-kernelcpp-kernel_burstcpp-test_kernelcpp">9. HLS Vector Addition Kernels — <code>kernel.cpp</code>, <code>kernel_burst.cpp</code>, <code>test_Kernel.cpp</code></h2>
+<p><strong>Summary:</strong> Two Vitis HLS versions of a vector addition kernel <code>vadd</code>, plus a testbench.
+- <code>kernel.cpp</code>: a single pipelined loop (<code>II=1</code>) reading A and B and writing C through one shared <code>m_axi</code> bundle (<code>gmem</code>), with <code>s_axilite</code> control.
+- <code>kernel_burst.cpp</code>: separate <code>m_axi</code> bundles per array (<code>gmem0/1/2</code>) and a read → compute → write loop over 64-element chunks in fully partitioned local buffers.
+- <code>test_Kernel.cpp</code>: runs <code>vadd</code> on 256 elements, compares against a software reference and prints PASSED/FAILED.</p>
+<p><strong>Significance:</strong> These are the synthesisable counterparts of <code>vadd_comparison.cpp</code>. Synthesise both and compare the reports (latency, AXI burst inference, resources) to see how separate AXI bundles and local buffering let the tool infer long bursts and use the ports in parallel.</p>
+<p><strong>How to Run:</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">source</span><span class="w"> </span>~/Xilinx/2025.1/Vitis/settings64.sh<span class="w">   </span><span class="c1"># adjust to your install; sets $XILINX_VITIS</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="c1"># C simulation (burst kernel + testbench)</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>g++<span class="w"> </span>-O2<span class="w"> </span>-I<span class="nv">$XILINX_VITIS</span>/include<span class="w"> </span>-o<span class="w"> </span>tb_vadd_burst<span class="w"> </span>kernel_burst.cpp<span class="w"> </span>test_Kernel.cpp
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>./tb_vadd_burst
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="c1"># Synthesis for the KV260 part: run both and compare the reports</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>v++<span class="w"> </span>-c<span class="w"> </span>--mode<span class="w"> </span>hls<span class="w"> </span>--part<span class="w"> </span>xck26-sfvc784-2LV-c<span class="w"> </span>--hls.flow_target<span class="w"> </span>vivado<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">    </span>--hls.syn.file<span class="w"> </span>kernel_burst.cpp<span class="w"> </span>--hls.syn.top<span class="w"> </span>vadd<span class="w"> </span>--hls.clock<span class="w"> </span>10ns<span class="w"> </span>--work_dir<span class="w"> </span>vadd_burst
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>v++<span class="w"> </span>-c<span class="w"> </span>--mode<span class="w"> </span>hls<span class="w"> </span>--part<span class="w"> </span>xck26-sfvc784-2LV-c<span class="w"> </span>--hls.flow_target<span class="w"> </span>vivado<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">    </span>--hls.syn.file<span class="w"> </span>kernel.cpp<span class="w"> </span>--hls.syn.top<span class="w"> </span>vadd<span class="w"> </span>--hls.clock<span class="w"> </span>10ns<span class="w"> </span>--work_dir<span class="w"> </span>vadd_simple
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="c1"># Reports: vadd_burst/hls/syn/report/vadd_csynth.rpt, vadd_simple/hls/syn/report/vadd_csynth.rpt</span>
+</span></code></pre></div>
+<em>Dependencies: Vitis HLS 2025.1 (<code>v++</code>; the kernels include <code>ap_int.h</code> and <code>hls_stream.h</code> from <code>$XILINX_VITIS/include</code>). <code>test_Kernel.cpp</code> declares the <code>kernel_burst.cpp</code> signature (<code>volatile int*</code>); to test <code>kernel.cpp</code>, change the declaration to <code>extern "C" void vadd(const int*, const int*, int*, int)</code>.</em></p>
+<hr />
+<h2 id="10-opencl-sobel-edge-detection-sobel_">10. OpenCL Sobel Edge Detection — <code>sobel_*</code></h2>
+<p><strong>Summary:</strong> Three OpenCL implementations of a 3×3 Sobel filter on an 8-bit greyscale image, plus host programs that time them.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sobel_naive.cl</code></td>
+<td>Each work-item reads its 9 neighbouring pixels directly from global memory</td>
+</tr>
+<tr>
+<td><code>sobel_tiled.cl</code></td>
+<td>Each work-group cooperatively loads a tile plus a 1-pixel halo into <code>__local</code> memory, then computes from it</td>
+</tr>
+<tr>
+<td><code>sobel_image.cl</code></td>
+<td>Uses <code>image2d_t</code> objects and a sampler, so the GPU's texture cache and hardware edge clamping handle memory access</td>
+</tr>
+<tr>
+<td><code>sobel_host.c</code></td>
+<td>Host program comparing the naive and tiled kernels (loads the <code>.cl</code> files at runtime)</td>
+</tr>
+<tr>
+<td><code>sobel_all_host.c</code></td>
+<td>Host program comparing all three kernels on a 1024×1024 random image</td>
+</tr>
+<tr>
+<td><code>run_sobel_all_host.sh</code></td>
+<td>Builds and runs <code>sobel_all_host</code></td>
+</tr>
+<tr>
+<td><code>sobel_image_host.c</code></td>
+<td>Code fragment (not a full program) showing the image-object setup for <code>sobel_image.cl</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Significance:</strong> A stencil like Sobel reads each input pixel 9 times. The naive kernel fetches all 9 from global memory; the tiled kernel fetches each pixel once per work-group and reuses it from on-chip memory, the same idea as line and window buffers in HLS image processing. The image version is a third option: rely on dedicated cache hardware instead of managing on-chip memory explicitly.</p>
+<p><strong>How to Run:</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Naive vs tiled (run from this directory so the .cl files are found)</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>gcc<span class="w"> </span>-O2<span class="w"> </span>-o<span class="w"> </span>sobel_host<span class="w"> </span>sobel_host.c<span class="w"> </span>-lOpenCL<span class="w"> </span>-lm
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>./sobel_host<span class="w"> </span><span class="o">[</span>width<span class="o">]</span><span class="w"> </span><span class="o">[</span>height<span class="o">]</span><span class="w"> </span><span class="o">[</span>block<span class="o">]</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="c1"># All three kernels</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>bash<span class="w"> </span>run_sobel_all_host.sh
+</span></code></pre></div>
+<em>Dependencies: OpenCL runtime and ICD loader (<code>libOpenCL</code>) with a GPU device; <code>sobel_image.cl</code> needs image support (OpenCL 1.2+). <code>sobel_all_host</code> uses a fixed 1024×1024 image with 16×16 work-groups, so the arguments in <code>run_sobel_all_host.sh</code> are ignored.</em></p>
+<hr />
+<h2 id="11-number_formatsc">11. <code>number_formats.c</code></h2>
+<p><strong>Summary:</strong> Four short predict-observe-explain demos on number representation. Each demo shows the code, asks you to predict the result, waits for Enter, then prints the result and asks you to explain it.</p>
+<table>
+<thead>
+<tr>
+<th>Demo</th>
+<th>Topic</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Bits of a float</td>
+<td>The 32 bits of <code>-9.875f</code> read as an integer (<code>0xC11E0000</code>). Students work out how that relates to the value</td>
+</tr>
+<tr>
+<td>2</td>
+<td>8-bit fixed point (value = integer / 128)</td>
+<td><code>(0.1 + 0.2) - 0.3</code> evaluates to -1 LSB, not 0, because each conversion truncates toward zero and the errors accumulate</td>
+</tr>
+<tr>
+<td>3</td>
+<td>16-bit fixed point (value = integer / 256)</td>
+<td>1.5 × 1.5 stored in an <code>int16_t</code> product overflows and gives 0.25 instead of 2.25. The fix is a wider (32-bit) intermediate</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Floating-point addition</td>
+<td><code>(a + b) + c</code> ≠ <code>a + (b + c)</code> for <code>1e30, -1e30, 1.0</code>: the 1.0 is absorbed</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Significance:</strong> Hardware choices about word length and number format decide accuracy, area and speed. Fixed point is cheap on FPGAs but requires you to track scaling, rounding and intermediate widths yourself. Floating point is convenient but not associative, so parallel or reordered reductions (as on GPUs and in pipelined HLS) can change the result.</p>
+<p><strong>How to Run:</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>gcc<span class="w"> </span>-o<span class="w"> </span>number_formats<span class="w"> </span>number_formats.c
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>./number_formats<span class="w">          </span><span class="c1"># all demos in order</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>./number_formats<span class="w"> </span><span class="m">2</span><span class="w">        </span><span class="c1"># a single demo</span>
+</span></code></pre></div>
+<em>Dependencies: standard C library only.</em></p>
+<details>
+<summary>Source: <code>number_formats.c</code></summary>
+
+<div class="language-c highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="cm">/*</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="cm"> * number_formats.c : four short predict-observe-explain demos on number</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="cm"> * representation. For each demo, write down your prediction, press Enter,</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="cm"> * then compare with what the program prints and explain any difference.</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="cm"> *</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="cm"> * Build : gcc -o number_formats number_formats.c</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="cm"> * Run   : ./number_formats        (all demos)</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="cm"> *         ./number_formats 2      (just demo 2)</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="cm"> */</span>
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>
+</span><span id="__span-11-14"><a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">wait_for_enter</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-15"><a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"  [press Enter to see the result] "</span><span class="p">);</span>
+</span><span id="__span-11-16"><a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="w">    </span><span class="n">fflush</span><span class="p">(</span><span class="n">stdout</span><span class="p">);</span>
+</span><span id="__span-11-17"><a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">getchar</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">'\n'</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">feof</span><span class="p">(</span><span class="n">stdin</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-11-18"><a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a><span class="p">}</span>
+</span><span id="__span-11-19"><a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a>
+</span><span id="__span-11-20"><a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a><span class="cm">/* Demo 1: what is actually stored in a float? */</span>
+</span><span id="__span-11-21"><a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">demo1</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-22"><a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a><span class="w">    </span><span class="n">puts</span><span class="p">(</span><span class="s">"=== Demo 1: the bits inside a float ==="</span><span class="p">);</span>
+</span><span id="__span-11-23"><a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a><span class="w">    </span><span class="k">union</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">f</span><span class="p">;</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">u</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
+</span><span id="__span-11-24"><a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a><span class="w">    </span><span class="n">x</span><span class="p">.</span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">-9.875f</span><span class="p">;</span>
+</span><span id="__span-11-25"><a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a>
+</span><span id="__span-11-26"><a id="__codelineno-11-26" name="__codelineno-11-26" href="#__codelineno-11-26"></a><span class="w">    </span><span class="n">puts</span><span class="p">(</span><span class="s">"float x = -9.875f;"</span><span class="p">);</span>
+</span><span id="__span-11-27"><a id="__codelineno-11-27" name="__codelineno-11-27" href="#__codelineno-11-27"></a><span class="w">    </span><span class="n">puts</span><span class="p">(</span><span class="s">"Predict: what is x in hex if we read its 32 bits as an integer?"</span><span class="p">);</span>
+</span><span id="__span-11-28"><a id="__codelineno-11-28" name="__codelineno-11-28" href="#__codelineno-11-28"></a><span class="w">    </span><span class="n">wait_for_enter</span><span class="p">();</span>
+</span><span id="__span-11-29"><a id="__codelineno-11-29" name="__codelineno-11-29" href="#__codelineno-11-29"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"  x = %f, bits = 0x%08X</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">u</span><span class="p">);</span>
+</span><span id="__span-11-30"><a id="__codelineno-11-30" name="__codelineno-11-30" href="#__codelineno-11-30"></a><span class="w">    </span><span class="n">puts</span><span class="p">(</span><span class="s">"Explain: how does 0xC11E0000 relate to -9.875?"</span><span class="p">);</span>
+</span><span id="__span-11-31"><a id="__codelineno-11-31" name="__codelineno-11-31" href="#__codelineno-11-31"></a><span class="p">}</span>
+</span><span id="__span-11-32"><a id="__codelineno-11-32" name="__codelineno-11-32" href="#__codelineno-11-32"></a>
+</span><span id="__span-11-33"><a id="__codelineno-11-33" name="__codelineno-11-33" href="#__codelineno-11-33"></a><span class="cm">/* Demo 2: fixed point with 7 fractional bits */</span>
+</span><span id="__span-11-34"><a id="__codelineno-11-34" name="__codelineno-11-34" href="#__codelineno-11-34"></a><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">demo2</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-35"><a id="__codelineno-11-35" name="__codelineno-11-35" href="#__codelineno-11-35"></a><span class="w">    </span><span class="n">puts</span><span class="p">(</span><span class="s">"=== Demo 2: 8-bit fixed point (value = integer / 128) ==="</span><span class="p">);</span>
+</span><span id="__span-11-36"><a id="__codelineno-11-36" name="__codelineno-11-36" href="#__codelineno-11-36"></a><span class="w">    </span><span class="kt">int8_t</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int8_t</span><span class="p">)(</span><span class="mf">0.1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">128</span><span class="p">);</span>
+</span><span id="__span-11-37"><a id="__codelineno-11-37" name="__codelineno-11-37" href="#__codelineno-11-37"></a><span class="w">    </span><span class="kt">int8_t</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int8_t</span><span class="p">)(</span><span class="mf">0.2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">128</span><span class="p">);</span>
+</span><span id="__span-11-38"><a id="__codelineno-11-38" name="__codelineno-11-38" href="#__codelineno-11-38"></a><span class="w">    </span><span class="kt">int8_t</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int8_t</span><span class="p">)(</span><span class="mf">0.3</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">128</span><span class="p">);</span>
+</span><span id="__span-11-39"><a id="__codelineno-11-39" name="__codelineno-11-39" href="#__codelineno-11-39"></a>
+</span><span id="__span-11-40"><a id="__codelineno-11-40" name="__codelineno-11-40" href="#__codelineno-11-40"></a><span class="w">    </span><span class="n">puts</span><span class="p">(</span><span class="s">"a = 0.1*128, b = 0.2*128, c = 0.3*128   (stored as int8_t)"</span><span class="p">);</span>
+</span><span id="__span-11-41"><a id="__codelineno-11-41" name="__codelineno-11-41" href="#__codelineno-11-41"></a><span class="w">    </span><span class="n">puts</span><span class="p">(</span><span class="s">"Predict: what is (a + b) - c ?"</span><span class="p">);</span>
+</span><span id="__span-11-42"><a id="__codelineno-11-42" name="__codelineno-11-42" href="#__codelineno-11-42"></a><span class="w">    </span><span class="n">wait_for_enter</span><span class="p">();</span>
+</span><span id="__span-11-43"><a id="__codelineno-11-43" name="__codelineno-11-43" href="#__codelineno-11-43"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"  a = %d, b = %d, c = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">);</span>
+</span><span id="__span-11-44"><a id="__codelineno-11-44" name="__codelineno-11-44" href="#__codelineno-11-44"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"  (a + b) - c = %d, which means %f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="p">((</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">128.0</span><span class="p">);</span>
+</span><span id="__span-11-45"><a id="__codelineno-11-45" name="__codelineno-11-45" href="#__codelineno-11-45"></a><span class="w">    </span><span class="n">puts</span><span class="p">(</span><span class="s">"Explain: why is it not 0?"</span><span class="p">);</span>
+</span><span id="__span-11-46"><a id="__codelineno-11-46" name="__codelineno-11-46" href="#__codelineno-11-46"></a><span class="p">}</span>
+</span><span id="__span-11-47"><a id="__codelineno-11-47" name="__codelineno-11-47" href="#__codelineno-11-47"></a>
+</span><span id="__span-11-48"><a id="__codelineno-11-48" name="__codelineno-11-48" href="#__codelineno-11-48"></a><span class="cm">/* Demo 3: fixed point multiplication */</span>
+</span><span id="__span-11-49"><a id="__codelineno-11-49" name="__codelineno-11-49" href="#__codelineno-11-49"></a><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">demo3</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-50"><a id="__codelineno-11-50" name="__codelineno-11-50" href="#__codelineno-11-50"></a><span class="w">    </span><span class="n">puts</span><span class="p">(</span><span class="s">"=== Demo 3: 16-bit fixed point multiply (value = integer / 256) ==="</span><span class="p">);</span>
+</span><span id="__span-11-51"><a id="__codelineno-11-51" name="__codelineno-11-51" href="#__codelineno-11-51"></a><span class="w">    </span><span class="kt">int16_t</span><span class="w"> </span><span class="n">A</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int16_t</span><span class="p">)(</span><span class="mf">1.5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">256</span><span class="p">);</span>
+</span><span id="__span-11-52"><a id="__codelineno-11-52" name="__codelineno-11-52" href="#__codelineno-11-52"></a><span class="w">    </span><span class="kt">int16_t</span><span class="w"> </span><span class="n">B</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int16_t</span><span class="p">)(</span><span class="mf">1.5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">256</span><span class="p">);</span>
+</span><span id="__span-11-53"><a id="__codelineno-11-53" name="__codelineno-11-53" href="#__codelineno-11-53"></a>
+</span><span id="__span-11-54"><a id="__codelineno-11-54" name="__codelineno-11-54" href="#__codelineno-11-54"></a><span class="w">    </span><span class="n">puts</span><span class="p">(</span><span class="s">"int16_t A = 1.5*256, B = 1.5*256;"</span><span class="p">);</span>
+</span><span id="__span-11-55"><a id="__codelineno-11-55" name="__codelineno-11-55" href="#__codelineno-11-55"></a><span class="w">    </span><span class="n">puts</span><span class="p">(</span><span class="s">"int16_t P = A * B;   int16_t C = P &gt;&gt; 8;"</span><span class="p">);</span>
+</span><span id="__span-11-56"><a id="__codelineno-11-56" name="__codelineno-11-56" href="#__codelineno-11-56"></a><span class="w">    </span><span class="n">puts</span><span class="p">(</span><span class="s">"Predict: what real value does C represent?"</span><span class="p">);</span>
+</span><span id="__span-11-57"><a id="__codelineno-11-57" name="__codelineno-11-57" href="#__codelineno-11-57"></a><span class="w">    </span><span class="n">wait_for_enter</span><span class="p">();</span>
+</span><span id="__span-11-58"><a id="__codelineno-11-58" name="__codelineno-11-58" href="#__codelineno-11-58"></a><span class="w">    </span><span class="kt">int16_t</span><span class="w"> </span><span class="n">P</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">B</span><span class="p">;</span>
+</span><span id="__span-11-59"><a id="__codelineno-11-59" name="__codelineno-11-59" href="#__codelineno-11-59"></a><span class="w">    </span><span class="kt">int16_t</span><span class="w"> </span><span class="n">C</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">P</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span>
+</span><span id="__span-11-60"><a id="__codelineno-11-60" name="__codelineno-11-60" href="#__codelineno-11-60"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"  C = %d, which means %f</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="n">C</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">256.0</span><span class="p">);</span>
+</span><span id="__span-11-61"><a id="__codelineno-11-61" name="__codelineno-11-61" href="#__codelineno-11-61"></a><span class="w">    </span><span class="n">puts</span><span class="p">(</span><span class="s">"Explain: 1.5 * 1.5 = 2.25. What went wrong, and how would you fix it?"</span><span class="p">);</span>
+</span><span id="__span-11-62"><a id="__codelineno-11-62" name="__codelineno-11-62" href="#__codelineno-11-62"></a><span class="p">}</span>
+</span><span id="__span-11-63"><a id="__codelineno-11-63" name="__codelineno-11-63" href="#__codelineno-11-63"></a>
+</span><span id="__span-11-64"><a id="__codelineno-11-64" name="__codelineno-11-64" href="#__codelineno-11-64"></a><span class="cm">/* Demo 4: float addition order */</span>
+</span><span id="__span-11-65"><a id="__codelineno-11-65" name="__codelineno-11-65" href="#__codelineno-11-65"></a><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">demo4</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-66"><a id="__codelineno-11-66" name="__codelineno-11-66" href="#__codelineno-11-66"></a><span class="w">    </span><span class="n">puts</span><span class="p">(</span><span class="s">"=== Demo 4: does the order of float additions matter? ==="</span><span class="p">);</span>
+</span><span id="__span-11-67"><a id="__codelineno-11-67" name="__codelineno-11-67" href="#__codelineno-11-67"></a><span class="w">    </span><span class="k">volatile</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1e30f</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">-1e30f</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">;</span><span class="w">   </span><span class="cm">/* volatile: stop compile-time folding */</span>
+</span><span id="__span-11-68"><a id="__codelineno-11-68" name="__codelineno-11-68" href="#__codelineno-11-68"></a>
+</span><span id="__span-11-69"><a id="__codelineno-11-69" name="__codelineno-11-69" href="#__codelineno-11-69"></a><span class="w">    </span><span class="n">puts</span><span class="p">(</span><span class="s">"float a = 1e30, b = -1e30, c = 1;"</span><span class="p">);</span>
+</span><span id="__span-11-70"><a id="__codelineno-11-70" name="__codelineno-11-70" href="#__codelineno-11-70"></a><span class="w">    </span><span class="n">puts</span><span class="p">(</span><span class="s">"Predict: (a + b) + c  and  a + (b + c)"</span><span class="p">);</span>
+</span><span id="__span-11-71"><a id="__codelineno-11-71" name="__codelineno-11-71" href="#__codelineno-11-71"></a><span class="w">    </span><span class="n">wait_for_enter</span><span class="p">();</span>
+</span><span id="__span-11-72"><a id="__codelineno-11-72" name="__codelineno-11-72" href="#__codelineno-11-72"></a><span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+</span><span id="__span-11-73"><a id="__codelineno-11-73" name="__codelineno-11-73" href="#__codelineno-11-73"></a><span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">b</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="p">);</span>
+</span><span id="__span-11-74"><a id="__codelineno-11-74" name="__codelineno-11-74" href="#__codelineno-11-74"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"  (a + b) + c = %g</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">);</span>
+</span><span id="__span-11-75"><a id="__codelineno-11-75" name="__codelineno-11-75" href="#__codelineno-11-75"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"  a + (b + c) = %g</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
+</span><span id="__span-11-76"><a id="__codelineno-11-76" name="__codelineno-11-76" href="#__codelineno-11-76"></a><span class="w">    </span><span class="n">puts</span><span class="p">(</span><span class="s">"Explain: why are they different?"</span><span class="p">);</span>
+</span><span id="__span-11-77"><a id="__codelineno-11-77" name="__codelineno-11-77" href="#__codelineno-11-77"></a><span class="p">}</span>
+</span><span id="__span-11-78"><a id="__codelineno-11-78" name="__codelineno-11-78" href="#__codelineno-11-78"></a>
+</span><span id="__span-11-79"><a id="__codelineno-11-79" name="__codelineno-11-79" href="#__codelineno-11-79"></a><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">demos</span><span class="p">[])(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">demo1</span><span class="p">,</span><span class="w"> </span><span class="n">demo2</span><span class="p">,</span><span class="w"> </span><span class="n">demo3</span><span class="p">,</span><span class="w"> </span><span class="n">demo4</span><span class="w"> </span><span class="p">};</span>
+</span><span id="__span-11-80"><a id="__codelineno-11-80" name="__codelineno-11-80" href="#__codelineno-11-80"></a><span class="cp">#define NDEMOS 4</span>
+</span><span id="__span-11-81"><a id="__codelineno-11-81" name="__codelineno-11-81" href="#__codelineno-11-81"></a>
+</span><span id="__span-11-82"><a id="__codelineno-11-82" name="__codelineno-11-82" href="#__codelineno-11-82"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="n">argv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-83"><a id="__codelineno-11-83" name="__codelineno-11-83" href="#__codelineno-11-83"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">argc</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-84"><a id="__codelineno-11-84" name="__codelineno-11-84" href="#__codelineno-11-84"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">atoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span><span id="__span-11-85"><a id="__codelineno-11-85" name="__codelineno-11-85" href="#__codelineno-11-85"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">NDEMOS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-86"><a id="__codelineno-11-86" name="__codelineno-11-86" href="#__codelineno-11-86"></a><span class="w">            </span><span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="w"> </span><span class="s">"Usage: %s [1-%d]</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">NDEMOS</span><span class="p">);</span>
+</span><span id="__span-11-87"><a id="__codelineno-11-87" name="__codelineno-11-87" href="#__codelineno-11-87"></a><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-11-88"><a id="__codelineno-11-88" name="__codelineno-11-88" href="#__codelineno-11-88"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-11-89"><a id="__codelineno-11-89" name="__codelineno-11-89" href="#__codelineno-11-89"></a><span class="w">        </span><span class="n">demos</span><span class="p">[</span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">]();</span>
+</span><span id="__span-11-90"><a id="__codelineno-11-90" name="__codelineno-11-90" href="#__codelineno-11-90"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-11-91"><a id="__codelineno-11-91" name="__codelineno-11-91" href="#__codelineno-11-91"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-11-92"><a id="__codelineno-11-92" name="__codelineno-11-92" href="#__codelineno-11-92"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NDEMOS</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-93"><a id="__codelineno-11-93" name="__codelineno-11-93" href="#__codelineno-11-93"></a><span class="w">        </span><span class="n">demos</span><span class="p">[</span><span class="n">i</span><span class="p">]();</span>
+</span><span id="__span-11-94"><a id="__codelineno-11-94" name="__codelineno-11-94" href="#__codelineno-11-94"></a><span class="w">        </span><span class="n">putchar</span><span class="p">(</span><span class="sc">'\n'</span><span class="p">);</span>
+</span><span id="__span-11-95"><a id="__codelineno-11-95" name="__codelineno-11-95" href="#__codelineno-11-95"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-11-96"><a id="__codelineno-11-96" name="__codelineno-11-96" href="#__codelineno-11-96"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-11-97"><a id="__codelineno-11-97" name="__codelineno-11-97" href="#__codelineno-11-97"></a><span class="p">}</span>
+</span></code></pre></div>
+
+</details>
+
+<hr />
+<h2 id="quick-reference">Quick Reference</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Platform</th>
+<th>Key Concept</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>col_row_maj_cache.c</code></td>
+<td>CPU</td>
+<td>Cache line utilisation, spatial locality</td>
+</tr>
+<tr>
+<td><code>aos_vs_soa.c</code></td>
+<td>CPU</td>
+<td>Memory layout, field access efficiency</td>
+</tr>
+<tr>
+<td><code>matrix_transpose_optimization.c</code></td>
+<td>CPU</td>
+<td>Cache-friendly access via pre-transpose</td>
+</tr>
+<tr>
+<td><code>gpu_demo.c</code></td>
+<td>GPU (OpenCL)</td>
+<td>Arithmetic intensity, compute- vs memory-bound</td>
+</tr>
+<tr>
+<td><code>coalesced_vs_noncoalesced.c</code> / <code>matmul_opencl.c</code></td>
+<td>GPU (OpenCL)</td>
+<td>Memory coalescing, transaction width</td>
+</tr>
+<tr>
+<td><code>vadd_comparison.cpp</code></td>
+<td>CPU</td>
+<td>AXI burst pattern, HLS pipeline pragmas</td>
+</tr>
+<tr>
+<td><code>sum_halves.cpp</code></td>
+<td>HLS</td>
+<td>BRAM port conflicts, array partitioning</td>
+</tr>
+<tr>
+<td><code>matmul_opencl _CPU fallback.c</code>, <code>matmul_openmp.c</code>, <code>matmul_opencl_autoselTileSize.c</code></td>
+<td>GPU (OpenCL) / CPU</td>
+<td>Tiling in local memory, tile-size tuning, OpenMP baseline</td>
+</tr>
+<tr>
+<td><code>kernel.cpp</code>, <code>kernel_burst.cpp</code>, <code>test_Kernel.cpp</code></td>
+<td>HLS</td>
+<td>AXI bundles, burst inference, HLS testbench</td>
+</tr>
+<tr>
+<td><code>sobel_*.cl</code>, <code>sobel_*host.c</code></td>
+<td>GPU (OpenCL)</td>
+<td>Stencil data reuse, local-memory tiling with halo, image objects</td>
+</tr>
+<tr>
+<td><code>number_formats.c</code></td>
+<td>CPU</td>
+<td>Float bit patterns, fixed-point rounding and overflow, non-associative float addition</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.tooltips"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
